@@ -46,7 +46,12 @@ magpie plugin add ~/code/magpie-packycode
 magpie plugin login packycode
 ```
 
-Tested on magpie 0.1.1246. Not affiliated with PackyAPI or magpie.
+Sign-in collects the system token or API keys in a masked password prompt and returns the key
+to magpie, including versions that hide the separate key field for prompted API methods
+(compatibility fix adapted from [upstream PR #1](https://github.com/egenchen/magpie-packycode/pull/1)).
+Existing saved accounts keep the same format.
+
+Not affiliated with PackyAPI or magpie.
 
 ---
 

@@ -78,8 +78,8 @@ quota 单位 = 500000 / 美元
 | `provider.models(provider, {auth})` 每个账号调用一次，结果缓存 1 小时；失败保留旧表 | 模型/价格刷新频率 = 1h，够用 |
 | `loader(getAuth)` 返回 `baseURL/apiKey/headers/fetch`，`fetch(url, init)` 可任意改写 URL 与头 | 这是「按请求选分组」的关键：可以替换 `Authorization` |
 | `init.headers` 已含账号 key（`x-api-key` 或 `Bearer`），请求体是字符串 | 必须删掉 `x-api-key` 再写自己的 Bearer |
-| `auth.methods[].type = "api"` 时，key 输入框的标题取 **label**；`prompts` 在 key 之前问 | 系统访问令牌就放在 key 框里，用户 ID/线路用 prompts |
-| `authorize(inputs)` **拿不到 key**（key 在之后的 save 里合并） | 登录时无法校验令牌，只能等第一次 `provider.models` 校验并 `signIn:"expired"` 标记 |
+| 有 `prompts` 和 `authorize` 的 API 登录方法会被 magpie 当成已在问题里收集 key，不再显示独立 key 输入框 | 用 `password` prompt 收集系统令牌/API keys，由 `authorize(inputs)` 返回 `key`（适配上游 PR #1） |
+| `authorize(inputs)` 从问题答案取得令牌，只检查非空，不请求控制台 | 凭据仍只存于 `auth.key`，metadata 不变；有效性在第一次 `provider.models` 时检查 |
 | `auth.options` 是开关（boolean），`input.magpie.options(id)` 实时读 | 四个开关：自动建 key / 受限分组 / 速度优先 / 健康检查 |
 | 插件 provider 的模型超过 24 个时，只默认暴露前 24 个给 agent | 插件按「家族 + 同族新模型在前」排序，让主力模型默认在这 24 个里；其余文档提示用户去 Providers 勾选 |
 | 模型 `limit` 留 0 时，magpie 会用自己 catalog 里的窗口补齐 | 实测 Claude/GPT/Qwen 窗口都对 |
